@@ -37,12 +37,18 @@ export default function AuthButtons() {
                         <DropdownMenuItem asChild>
                             <Link href="/account">My Account</Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <Link href="/admin-dashboard">Admin Dashboard</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <Link href="/account/my-cart">My Cart</Link>
-                        </DropdownMenuItem>
+
+                        {!!auth.customClaims?.admin && (
+                            <DropdownMenuItem asChild>
+                                <Link href="/admin-dashboard">Admin Dashboard</Link>
+                            </DropdownMenuItem>
+                        )}
+
+                        {!auth.customClaims?.admin && (
+                            <DropdownMenuItem asChild>
+                                <Link href="/account/my-cart">My Cart</Link>
+                            </DropdownMenuItem>
+                        )}
                         <DropdownMenuItem onClick={async () => {
                             await auth.logout();
                         }}>
