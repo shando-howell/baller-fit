@@ -1,5 +1,6 @@
 import admin, { initializeApp } from "firebase-admin";
 import { ServiceAccount, getApps } from "firebase-admin/app";
+import { Auth, getAuth } from "firebase-admin/auth";
 import { Firestore, getFirestore } from "firebase-admin/firestore"
 
 const serviceAccount = {
@@ -18,15 +19,18 @@ const serviceAccount = {
 
 const currentApps = getApps();
 let firestore: Firestore;
+let auth: Auth;
 
 if (!currentApps.length) {
     const app = initializeApp({
         credential: admin.credential.cert(serviceAccount as ServiceAccount)
     });
     firestore = getFirestore(app);
+    auth = getAuth(app);
 } else {
     const app = currentApps[0];
     firestore = getFirestore(app);
+    auth = getAuth(app);
 }
 
-export { firestore };
+export { firestore, auth };

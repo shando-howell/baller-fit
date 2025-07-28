@@ -1,7 +1,14 @@
+import Image from "next/image";
+
 export default function Home() {
   return (
-    <div className="font-sans items-center justify-items-center min-h-screen p-8">
-      <h1>Baller Fit</h1>
-    </div>
+    <main className="min-h-screen relative p-24 flex items-center justify-center">
+      <Image 
+        src="/images/hero-image.jpg"
+        alt="BallerFit"
+        fill
+        className="object-cover"
+      />
+    </main>
   );
 }
