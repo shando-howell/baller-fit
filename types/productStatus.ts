@@ -1,0 +1,1 @@
+export type ProductStatus = "hot" | "sale" | "new-arrival"

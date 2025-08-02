@@ -3,6 +3,7 @@ import "./globals.css";
 import { AuthProvider } from "@/context/auth";
 import NavBar from "@/components/NavBar";
 import { Poppins } from 'next/font/google';
+import { Toaster } from "@/components/ui/sonner";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -25,6 +26,7 @@ export default function RootLayout({
         <AuthProvider>
           <NavBar />
           {children}
+          <Toaster richColors />
         </AuthProvider>
       </body>
     </html>

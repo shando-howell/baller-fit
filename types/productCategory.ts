@@ -1,0 +1,1 @@
+export type ProductCategory = "outwears" | "jerseys" | "hats" | "accessories" | "sneakers"
