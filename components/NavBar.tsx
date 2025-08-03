@@ -1,5 +1,6 @@
 import Link from "next/link"
 import AuthButtons from "./AuthButtons"
+import { ShoppingCart } from "lucide-react"
 
 const NavBar = () => {
   return (
@@ -14,6 +15,13 @@ const NavBar = () => {
               BallerFit
             </Link>
             <ul className="flex gap-6 items-center">
+              <li>
+                <Link
+                  href="/"
+                >
+                  <ShoppingCart size={18}/>
+                </Link>
+              </li>
               <li>
                 <Link 
                   href="/shop"

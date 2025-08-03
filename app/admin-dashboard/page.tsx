@@ -4,7 +4,14 @@ import { PlusCircleIcon } from "lucide-react"
 import Link from "next/link"
 import ProductsTable from "./ProductsTable"
 
-const AdminDashboard = async () => {
+const AdminDashboard = async ({
+  searchParams
+}: {
+  searchParams: Promise<any>
+}) => {
+  const searchParamsValue = await searchParams;
+  console.log({searchParams});
+
   return (
     <div>
       <Breadcrumbs items={[{
@@ -16,7 +23,7 @@ const AdminDashboard = async () => {
           <PlusCircleIcon/>New Product
         </Link>
       </Button>
-      <ProductsTable />
+      <ProductsTable page={searchParamsValue?.page ? parseInt(searchParamsValue.page) : 1}/>
     </div>
   )
 }

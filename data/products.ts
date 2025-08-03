@@ -1,4 +1,4 @@
-import { firestore } from "@/firebase/server";
+import { firestore, getTotalPages } from "@/firebase/server";
 import { Product } from "@/types/product";
 import { ProductCategory } from "@/types/productCategory";
 import "server-only"
@@ -34,6 +34,8 @@ export const getProducts = async (options?: GetProductsOptions) => {
         productsQuery = productsQuery.where("category", "in", category);
     }
 
+    const totalPages = await getTotalPages(productsQuery, pageSize);
+
     const productsSnapshot = await productsQuery
         .limit(pageSize)
         .offset((page - 1) * pageSize).get();
@@ -43,5 +45,15 @@ export const getProducts = async (options?: GetProductsOptions) => {
             ...doc.data()
         } as Product));
 
-        return { data: products };
+        return { data: products, totalPages };
+}
+
+export const getProductById = async (productId: string) => {
+    const productSnapshot = await firestore
+        .collection("products")
+        .doc(productId)
+        .get();
+
+        const productData = { id: productSnapshot.id, ...productSnapshot.data() } as Product;
+        return productData;
 }

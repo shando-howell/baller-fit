@@ -13,12 +13,16 @@ import { Button } from "./ui/button";
 type Props = {
     submitButtonLabel: React.ReactNode;
     handleSubmit: (data: z.infer<typeof productDataSchema>) => void;
+    defaultValues?: z.infer<typeof productDataSchema>;
 }
 
-export default function ProductForm({handleSubmit, submitButtonLabel}: Props) {
-    const form = useForm<z.infer<typeof productDataSchema>>({
-        resolver: zodResolver(productDataSchema),
-        defaultValues: {
+export default function ProductForm({
+    handleSubmit, 
+    submitButtonLabel,
+    defaultValues
+}: Props) {
+    const combinedDefaultValues: z.infer<typeof productDataSchema> = {
+        ...{
             name: "",
             price: 0,
             stock: 0,
@@ -26,8 +30,14 @@ export default function ProductForm({handleSubmit, submitButtonLabel}: Props) {
             color: "",
             description: "",
             status: "new-arrival",
-            category: "outwears"
-        }
+            category: "outwears",
+        },
+        ...defaultValues,
+    }
+
+    const form = useForm<z.infer<typeof productDataSchema>>({
+        resolver: zodResolver(productDataSchema),
+        defaultValues: combinedDefaultValues,
     });
 
     return (
