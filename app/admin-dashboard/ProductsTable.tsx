@@ -1,8 +1,10 @@
+import ProductStatusBadge from "@/components/ProductStatusBadge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getProducts } from "@/data/products";
-import { PencilIcon } from "lucide-react";
+import { EyeIcon, PencilIcon } from "lucide-react";
 import Link from "next/link";
+import numeral from "numeral";
 
 export default async function ProductsTable({
     page = 1
@@ -47,14 +49,22 @@ export default async function ProductsTable({
                             return (
                                 <TableRow key={product.id}>
                                     <TableCell>{product.name}</TableCell>
-                                    <TableCell>{product.price}</TableCell>
+                                    <TableCell>${numeral(product.price).format("0,0")}</TableCell>
                                     <TableCell>{product.category}</TableCell>
-                                    <TableCell>{product.status}</TableCell>
-                                    <TableCell>View / <Button asChild variant="outline" size="sm">
-                                        <Link href={`/admin-dashboard/edit/${product.id}`}>
-                                            <PencilIcon />
-                                        </Link>
-                                        </Button></TableCell>
+                                    <TableCell><ProductStatusBadge status={product.status}/></TableCell>
+                                    <TableCell className="flex justify-end gap-1"> 
+                                        <Button asChild variant="outline" size="sm">
+                                            <Link href={`/product/${product.id}`}>
+                                                <EyeIcon />
+                                            </Link>
+                                        </Button>
+
+                                        <Button asChild variant="outline" size="sm">
+                                            <Link href={`/admin-dashboard/edit/${product.id}`}>
+                                                <PencilIcon />
+                                            </Link>
+                                        </Button>
+                                    </TableCell>
                                 </TableRow>
                             )
                         })}
@@ -63,7 +73,13 @@ export default async function ProductsTable({
                         <TableRow>
                             <TableCell colSpan={5} className="text-center">
                                 {Array.from({length: totalPages}).map((_, i) => (
-                                    <Button key={i} asChild variant="outline" className="mx-1">
+                                    <Button 
+                                        disabled={page === i + 1} 
+                                        key={i} 
+                                        asChild={page !== i + 1}
+                                        variant="outline" 
+                                        className="mx-1"
+                                    >
                                         <Link href={`/admin-dashboard?page=${i + 1}`}>
                                             {i + 1}
                                         </Link>

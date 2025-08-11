@@ -5,7 +5,7 @@ import { useAuth } from "@/context/auth";
 import { productDataSchema } from "@/validation/productSchema";
 import { PlusCircleIcon } from "lucide-react";
 import z from "zod";
-import { saveNewProduct } from "./actions";
+import { createProduct } from "./actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -20,7 +20,7 @@ const NewProductForm = () => {
             return;
         }
 
-        const response = await saveNewProduct({...data, token});
+        const response = await createProduct(data, token);
         if(!!response.error) {
             toast.error("Error!", {
                 description: response.error

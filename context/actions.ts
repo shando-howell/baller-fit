@@ -19,10 +19,16 @@ export const setToken = async ({
     try {
         const verifiedToken = await auth.verifyIdToken(token);
         if (!verifiedToken) {
+            console.log('No verified token found.')
             return;
         }
+        console.log(`Verified token uid ==> ${verifiedToken.uid}`)
 
-        const userRecord = await auth.getUser(verifiedToken.uid);
+        // Auth bug starts here...
+        // const userRecord = await auth.getUser(verifiedToken.uid);
+
+        // This appears to work...
+        const userRecord = verifiedToken;
         if (process.env.ADMIN_EMAIL === userRecord.email && !userRecord.customClaims?.admin) {
             auth.setCustomUserClaims(userRecord.uid, {
                 admin: true
@@ -39,6 +45,6 @@ export const setToken = async ({
             secure: process.env.NODE_ENV === "production",
         });
     } catch (e) {
-        console.log("Could not verify token.")
+        console.log("Could not set admin privilege to verified token.")
     }
 }

@@ -3,7 +3,7 @@
 import { auth, firestore } from "@/firebase/server";
 import { productDataSchema } from "@/validation/productSchema";
 
-export const saveNewProduct = async (data: {
+export const createProduct = async (data: {
     name: string;
     price: number;
     stock: number;
@@ -11,11 +11,9 @@ export const saveNewProduct = async (data: {
     color: string;
     description: string;
     status: "hot" | "sale" | "new-arrival";
-    category: "outwears" | "jerseys" | "hats" | "accessories" | "sneakers",
-    token: string;
-}) => {
-    const {token, ...productData} = data;
-    const verifiedToken = await auth.verifyIdToken(token);
+    category: "outwears" | "jerseys" | "hats" | "accessories" | "sneakers"
+}, authToken: string) => {
+    const verifiedToken = await auth.verifyIdToken(authToken);
 
     if (!verifiedToken.admin) {
         return {
@@ -24,7 +22,7 @@ export const saveNewProduct = async (data: {
         }
     }
 
-    const validation = productDataSchema.safeParse(productData);
+    const validation = productDataSchema.safeParse(data);
     if (!validation.success) {
         return {
             error: true,
@@ -33,7 +31,7 @@ export const saveNewProduct = async (data: {
     }
 
     const product = await firestore.collection("products").add({
-        ...productData,
+        ...data,
         created: new Date(),
         updated: new Date()
     })
