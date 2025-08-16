@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -12,7 +12,7 @@ import { z } from "zod";
 const formSchema = z.object({
     minPrice: z.string().optional(),
     maxPrice: z.string().optional(),
-    // category: z.string().optional()
+    category: z.string().optional()
 })
 
 export default function FiltersForm() {
@@ -24,7 +24,7 @@ export default function FiltersForm() {
         defaultValues: {
             minPrice: searchParams.get("minPrice") ?? "",
             maxPrice: searchParams.get("maxPrice") ?? "",
-            // category: searchParams.get("category") ?? "",
+            category: searchParams.get("category") ?? "",
         }
     });
 
@@ -40,9 +40,9 @@ export default function FiltersForm() {
             newSearchParams.set("maxPrice", data.maxPrice);
         }
         
-        // if(data.category) {
-        //     newSearchParams.set("category", data.category);
-        // }
+        if(data.category) {
+            newSearchParams.set("category", data.category);
+        }
 
         newSearchParams.set("page", "1");
         router.push(`/shop?${newSearchParams.toString()}`)
@@ -56,6 +56,9 @@ export default function FiltersForm() {
             >
                 <FormField control={form.control} name="minPrice" render={({field}) => (
                     <FormItem>
+                        <FormLabel>
+                            Min Price
+                        </FormLabel>
                         <FormControl>
                             <Input {...field} placeholder="Min price" type="number" min={0}/>
                         </FormControl>
@@ -64,14 +67,20 @@ export default function FiltersForm() {
 
                 <FormField control={form.control} name="maxPrice" render={({field}) => (
                     <FormItem>
+                        <FormLabel>
+                            Max Price
+                        </FormLabel>
                         <FormControl>
                             <Input {...field} placeholder="Max price" type="number" min={0}/>
                         </FormControl>
                     </FormItem>
                 )} />
 
-                {/* <FormField control={form.control} name="category" render={({field}) => (
+                <FormField control={form.control} name="category" render={({field}) => (
                     <FormItem>
+                        <FormLabel>
+                            Category
+                        </FormLabel>
                         <FormControl>
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <SelectTrigger>
@@ -87,9 +96,9 @@ export default function FiltersForm() {
                             </Select>
                         </FormControl>
                     </FormItem>
-                )}/> */}
+                )}/>
 
-                <Button type="submit">
+                <Button type="submit" className="mt-auto">
                     Search
                 </Button>
             </form>

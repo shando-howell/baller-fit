@@ -23,7 +23,7 @@ const ProductPage = async ({params}: {
                             <CarouselItem>
                                 <div className="relative h-[80vh] min-h-80">
                                     <Image
-                                        src="/images/Sneaker-Placeholder.jpg"
+                                        src="/images/sneaker-placeholder.jpg"
                                         alt="Placeholder image"
                                         fill
                                         className="object-cover"

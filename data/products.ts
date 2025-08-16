@@ -1,13 +1,13 @@
 import { firestore, getTotalPages } from "@/firebase/server";
 import { Product } from "@/types/product";
-// import { ProductCategory } from "@/types/productCategory";
+import { ProductCategory } from "@/types/productCategory";
 import "server-only"
 
 type GetProductsOptions = {
     filters?: {
         minPrice?: number | null;
         maxPrice?: number | null;
-        // category?: ProductCategory[] | null;
+        category?: ProductCategory[] | null;
     },
     pagination?: {
         pageSize?: number;
