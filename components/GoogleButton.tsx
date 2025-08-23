@@ -9,11 +9,15 @@ const GoogleButton = () => {
   const router = useRouter();
 
   return (
-    <Button onClick={async () => {
-        await auth?.loginWithGoogle();
-        router.refresh();
-    }}
-    className="w-full"
+    <Button 
+      variant="outline"
+      onClick={async () => {
+        try {
+          await auth?.loginWithGoogle();
+          router.refresh();
+        } catch (e) {}
+      }}
+      className="w-full"
     >
         Continue with Google
     </Button>

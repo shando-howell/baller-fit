@@ -6,7 +6,7 @@ const NavBar = () => {
   return (
     <>
         <nav 
-            className="bg-sky-700 text-yellow-400 p-5 h-18 flex items-center justify-between z-10 relative"
+            className="bg-sky-700 text-white p-5 h-18 flex items-center justify-between z-10 relative"
         >
             <Link 
               href="/"
