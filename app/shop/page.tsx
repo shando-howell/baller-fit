@@ -7,6 +7,8 @@ import numeral from "numeral"
 import ProductStatusBadge from "@/components/ProductStatusBadge"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import AddToCartButton from "./AddToCartButton"
+import { getUserCart } from "@/data/cart"
 
 const Shop = async ({ 
   searchParams 
@@ -35,6 +37,10 @@ const Shop = async ({
       // category
     }
   });
+
+  const userCart = await getUserCart();
+
+  console.log({userCart});
 
   return (
     <div className="max-w-screen-lg mx-auto">
@@ -74,9 +80,7 @@ const Shop = async ({
                     <ProductStatusBadge status={product.status} />
                   </div>
                 </div>
-                <Button>
-                  Add To Cart
-                </Button>
+                <AddToCartButton productId={product.id}/>
               </div>
             </CardContent>
           </Card>

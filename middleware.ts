@@ -12,7 +12,8 @@ export async function middleware(request: NextRequest) {
     const token = cookieStore.get("firebaseAuthToken")?.value;
 
     if (!token && (request.nextUrl.pathname.startsWith("/login") || 
-        request.nextUrl.pathname.startsWith("/register"))
+        request.nextUrl.pathname.startsWith("/register")) ||
+        request.nextUrl.pathname.startsWith("/shop")
     ) {
         return NextResponse.next();
     }
@@ -23,7 +24,7 @@ export async function middleware(request: NextRequest) {
     }
 
     if (!token) {
-        return NextResponse.redirect(new URL("/", request.url))
+        return NextResponse.redirect(new URL("/", request.url));
     }
 
     const decodedToken = decodeJwt(token);
@@ -31,12 +32,19 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL(
             `/api/refresh-token?redirect=${encodeURIComponent(
                 request.nextUrl.pathname
-            )}`, request.url)
+            )}`, 
+            request.url)
         );
     }
 
-    if(!decodedToken.admin) {
-        return NextResponse.redirect(new URL("/", request.url))
+    if(!decodedToken.admin &&
+        request.nextUrl.pathname.startsWith("/admin-dashbaod")
+    ) {
+        return NextResponse.redirect(new URL("/", request.url));
+    }
+
+    if (decodedToken.admin && request.nextUrl.pathname.startsWith("/account/my-cart")) {
+        return NextResponse.redirect(new URL("/", request.url));
     }
 
     return NextResponse.next();
@@ -48,5 +56,8 @@ export const config = {
         "/admin-dashboard/:path*",
         "/login",
         "/register",
+        "/account",
+        "/account/:path*",
+        "/shop"
     ],
 };

@@ -1,0 +1,20 @@
+"use server"
+
+import { auth, firestore } from "@/firebase/server"
+
+export const addToCart = async (productId: string, authToken: string) => {
+    const verifiedToken = await auth.verifyIdToken(authToken);
+
+    if (!verifiedToken) {
+        return {
+            error: true,
+            message: "Unauthorized"
+        }
+    }
+
+    await firestore.collection("cart").doc(verifiedToken.uid).set({
+        [productId]: true
+    }, {
+        merge: true
+    })
+}
