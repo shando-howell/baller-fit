@@ -1,6 +1,6 @@
 import Link from "next/link"
 import AuthButtons from "./AuthButtons"
-import { ShoppingCart } from "lucide-react"
+import ShoppingCart from "./ShoppingCart"
 
 const NavBar = () => {
   return (
@@ -19,7 +19,7 @@ const NavBar = () => {
                 <Link
                   href="/"
                 >
-                  <ShoppingCart size={18}/>
+                  <ShoppingCart />
                 </Link>
               </li>
               <li>

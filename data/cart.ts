@@ -2,7 +2,6 @@ import "server-only";
 import { cookies } from "next/headers";
 import { auth, firestore } from "@/firebase/server";
 
-
 export const getUserCart = async () => {
     const cookieStore = await cookies();
     const token = cookieStore.get("firebaseAuthToken")?.value;

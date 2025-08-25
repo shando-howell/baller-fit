@@ -9,6 +9,9 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import AddToCartButton from "./AddToCartButton"
 import { getUserCart } from "@/data/cart"
+import { cookies } from "next/headers"
+import { auth } from "@/firebase/server"
+import { DecodedIdToken } from "firebase-admin/auth"
 
 const Shop = async ({ 
   searchParams 
@@ -41,6 +44,14 @@ const Shop = async ({
   const userCart = await getUserCart();
 
   console.log({userCart});
+
+  const cookieStore = await cookies();
+  const token = cookieStore.get("firebaseAuthToken")?.value;
+  let verifiedToken: DecodedIdToken | null;
+
+  if (token) {
+    verifiedToken = await auth.verifyIdToken(token);
+  }
 
   return (
     <div className="max-w-screen-lg mx-auto">
@@ -80,7 +91,9 @@ const Shop = async ({
                     <ProductStatusBadge status={product.status} />
                   </div>
                 </div>
-                <AddToCartButton productId={product.id}/>
+                {(!verifiedToken || !verifiedToken.admin) && (
+                  <AddToCartButton productId={product.id}/>
+                )}
               </div>
             </CardContent>
           </Card>
